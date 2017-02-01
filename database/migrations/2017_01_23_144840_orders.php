@@ -19,6 +19,7 @@ class Orders extends Migration
             $table->date('order_date');
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 
