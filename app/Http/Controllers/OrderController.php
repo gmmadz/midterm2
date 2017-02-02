@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Order;
 use App\Customer;
+use App\Order;
 use App\OrderDetails;
+
 
 class OrderController extends Controller
 {
@@ -16,11 +17,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        $customer = Customer::all();
+       // return view('orders.orders');
+
         $fullname = Customer::get()->pluck('full_name', 'id');
 
-        return view('orders.orders')->withOrders($orders)->withCustomers($customer)->withfullname($fullname);
+        return view('orders.orders')->withFullname($fullname);
     }
 
     /**
@@ -41,7 +42,6 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-
         $order = new Order;
 
         $order->customer_id = $request->customer_id;
@@ -49,16 +49,17 @@ class OrderController extends Controller
 
         $order->save();
 
-        for($i = 0 ; $i < sizeof($request->name) ; $i++){
-            $orderDetails = new OrderDetails;
+      for($i=0; $i < sizeof($request->name); $i++){
+            $order_details = new OrderDetails;
+            $order_details->order_id = $order->id;
+            $order_details->item_name = $request->name[$i];
+            $order_details->quantity = $request->quantity[$i];
 
-            $orderDetails->order_id = $order->id;
-            $orderDetails->item_name = $request->name[$i];
-            $orderDetails->quantity = $request->quantity[$i];
-
-            $orderDetails->save();
+            $order_details->save();
         }
+
         return redirect()->route('orders.index');
+
     }
 
     /**
@@ -80,7 +81,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**

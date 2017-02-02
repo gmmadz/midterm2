@@ -1,19 +1,24 @@
-$(document).ready(function() {
-  var i=1;
+function addRow(tableID) {
+  var table = document.getElementById(tableID);
+  var rowCount = table.rows.length;
+  if(rowCount < 8){                            // limit the user from creating fields more than your limits
+    var row = table.insertRow(rowCount);
+    var colCount = table.rows[0].cells.length;
+    for(var i=0; i <colCount; i++) {
+      var newcell = row.insertCell(i);
+      newcell.innerHTML = table.rows[1].cells[i].innerHTML;
+    }
+  }else{
+     alert("Maximum number of Items is 8");
+         
+  }
+}
+
+function deleteRow(tableID) {
+  var table = document.getElementById(tableID);
+  var rowCount = table.rows.length;
+  if (rowCount > 2) {
+    table.deleteRow(rowCount - 1);
+  }
   
-  $("#add_row").click(function() {
-      
-      $('#addr'+i).html("<td>"+ (i+1) +"</td><td><input name='name["+i+"]' type='text' placeholder='Name' class='form-control input-md'  /> </td><td><input  name='quantity["+i+"]' type='text' placeholder='Quantity'  class='form-control input-md'></td>");
-
-      $('#tab_logic').append('<tr id="addr'+(i+1)+'"></tr>');
-      i++; 
-  });
-
-  $("#delete_row").click(function() {
-    if(i>1) {
-	     $("#addr"+(i-1)).html('');
-		    i--;
-	  }
-	});
-
-});
+} 
