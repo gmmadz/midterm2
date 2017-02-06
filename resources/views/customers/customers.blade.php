@@ -51,7 +51,7 @@
                              <td>{{ $customer->address }}</td> 
 
                             <td class="text-right">
-                              <button class="edit-modal btn btn-success" data-id="{{ $customer->id }}" data-fname="first_name" data-lname="last_name" data-address="address">
+                              <button class="edit-modal btn btn-success" data-id="{{ $customer->id }}" data-fname="first_name" data-lname="last_name" data-address="address" data-target="#myModal">
                                 <span class="glyphicon glyphicon-pencil"></span>
                               </button>
                             </td>
@@ -67,7 +67,7 @@
                 </table>
             </div>
         </div>
-       {{ $customers->links() }}
+         {{ $customers->links() }}
     </div>
 
     <!-- Add Customer Modal -->
@@ -99,7 +99,34 @@
       </div>
     </div>
 
+   {{-- Edit Modal --}}
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="panel-title" id="myModalLabel"><b>Edit Customer</b></h4>
+              </div>
+            <div class="modal-body">
+                {{--{!! Form::open() !!}  This should be Form::Model --}}
+                {!! Form::model($customer, ['route' => ['customers.update', $customer->id], 'method' => 'PUT']) !!}
+                    {!! Form::hidden('id', null, ['id' => 'fid', 'class' => 'form-control', 'required' => '']) !!} {{-- the "id" here match the "#fid" in the javascript --}}
 
+                    {!! Form::label('name', 'Customer Name:') !!}
+                    {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control', 'required' => '', 'maxlength' => '35']) !!} {{-- the "id" here match the "#name" in the javascript --}}
+
+                    {!! Form::label('address', 'Address:') !!}
+                    {!! Form::text('address', null, ['id' => 'address', 'class' => 'form-control', 'required' => '', 'maxlength' => '35']) !!}
+
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal" style="margin-top:20px">Cancel</button>
+                      {!! Form::submit('Update', ['class' => 'btn btn-success', 'style' => 'margin-top: 20px']) !!}
+                    </div>
+                {!! Form::close() !!}
+            </div>
+          </div>
+        </div>
+    </div>
 
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -110,13 +137,12 @@
     {!! Html::script('js/filtertable.js') !!}
 
 
-    {{-- Edit Data Modal Javascript--}}
+   {{-- Edit Data Modal Javascript--}}
     <script type="text/javascript">
         $(document).on('click', '.edit-modal', function() {
             $('.form-horizontal').show();
             $('#fid').val($(this).data('id'));   {{-- refer to the edit button above this is data-id --}}
-            $('#name').val($(this).data('first_name')); {{-- refer to the edit button above this is data-name --}}
-            $('#name').val($(this).data('first_name')); {{-- refer to the edit button above this is data-name --}}
+            $('#name').val($(this).data('name')); {{-- refer to the edit button above this is data-name --}}
             $('#address').val($(this).data('address')); {{-- refer to the edit button above this is data-address --}}
             $('#myModal').modal('show');                {{-- when the edit button is clicked this values are passed into the modal. Name (id) of the modal is myModal --}}
         });
