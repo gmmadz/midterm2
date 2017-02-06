@@ -15,9 +15,13 @@
   <body>
     {{--Simple Dynamic Table --}}
     <div class="container">
+
         <div class="row">
+
             <div class="col-lg-12">
                 <h3>Order Details</h3>
+                
+
                 <table class="table table-bordered table-hover" id="dataTable">
                   <thead>
                       <tr>
@@ -28,8 +32,9 @@
                   <tbody>
                       <tr>
                         <td class="col-md-10">
-                            {{-- replace ['value1', 'value2'] with your array variable from your controller--}}
-                            {!! Form::select('item_name[]', ['value1', 'value2'], null, ['class' => 'form-control', 'required' => '', 'placeholder' => 'Select One']) !!}
+                            {!! Form::select('item_id', $itemname, null, ['class' => 'form-control', 'required' => '', 'placeholder' => 'Select One']) !!}
+
+                            
                         </td>
                         <td>
                             {!! Form::text('quantity[]', null, ['class' => 'form-control', 'required' => '']) !!}

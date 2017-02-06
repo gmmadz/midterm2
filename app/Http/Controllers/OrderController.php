@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Customer;
 use App\Order;
 use App\OrderDetails;
+use App\Item;
 
 
 class OrderController extends Controller
@@ -17,11 +18,18 @@ class OrderController extends Controller
      */
     public function index()
     {
-       // return view('orders.orders');
 
-        $fullname = Customer::get()->pluck('full_name', 'id');
 
-        return view('orders.orders')->withFullname($fullname);
+      //  $orders = Order::all();
+        $item= Item::all();
+        $itemname = Item::get()->pluck('item_name', 'id');
+        return view('orders.orders')->withItems($item)->withItemname($itemname);
+        
+        /*
+            // return view('orders.orders');
+        $item = Item::all();
+        $item_name = Item::get()->pluck('full_name', 'id');
+        return view('orders.orders')->withItems($item)->withItemname($itemname);*/
     }
 
     /**

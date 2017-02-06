@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Customer;
+use App\Item;
 
-class CustomerController extends Controller
+
+class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +15,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::paginate(3);
-
-        return view('customers.customers')->withCustomers($customers);
+       
+        $items = Item::paginate(3);
+        return view('items.items')->withItems($items);
     }
 
     /**
@@ -26,7 +27,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -37,16 +38,15 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $customers = new Customer;
+        $items = new Item;
 
-        $customers ->last_name = $request-> last_name;
-        $customers ->first_name = $request-> first_name;
-        $customers ->address = $request-> address;
+        $items ->item_name = $request-> item_name;
+        $items ->quantity = $request-> quantity;
 
-        $customers->save();
+        $items->save();
 
 
-        return redirect()->route('customers.index');
+        return redirect()->route('items.index');
     }
 
     /**
@@ -68,8 +68,7 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-       /* $customers = Customer::find($id);
-        return*/
+        //
     }
 
     /**
@@ -81,12 +80,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $customer = Customer::findOrFail($id);
-        $customer->last_name = $request->last_name;
-        $customer->first_name = $request->first_name;
-        $customer->address = $request->address; 
-        $customer->save();
-        return redirect()->route('customers.index');
+        //
     }
 
     /**
@@ -97,7 +91,7 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        customer::destroy($id);
-        return redirect()->route('customers.index');
+        item::destroy($id);
+        return redirect()->route('items.index');
     }
 }

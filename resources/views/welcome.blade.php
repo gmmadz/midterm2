@@ -74,6 +74,7 @@
                 <div class="links">
                     <a href="/customers">Customers</a>
                     <a href="/orders">Orders</a>
+                    <a href="/items">Items</a>
                 </div>
             </div>
         </div>

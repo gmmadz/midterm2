@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Customers</title>
+    <title>Items</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -16,10 +16,10 @@
   </head>
   <body>
     <div class="container">
-        <h3>List of Customers</h3>
+        <h3>List of Items</h3>
         <div class="row pull-right">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCustomer">
-              Add New Customer
+              Add New Item
             </button>
             {{-- {{ Html::linkRoute('customers.create', 'Add New Customer', array(), array('class' => 'btn btn-primary')) }} --}}
         </div>
@@ -28,7 +28,7 @@
         <div class="row">
             <div class="panel panel-primary filterable">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Customers</h3>
+                    <h3 class="panel-title">Items</h3>
                     <div class="pull-right">
                         <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
                     </div>
@@ -36,22 +36,20 @@
                 <table class="table">
                     <thead>
                         <tr class="filters">
-                            <th><input type="text" class="form-control" placeholder="Last Name" disabled></th>
-                            <th><input type="text" class="form-control" placeholder="First Name" disabled></th>
-                            <th><input type="text" class="form-control" placeholder="Address" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Item Name" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Quantity" disabled></th>
                             <th><input type="text" class="form-control text-right" placeholder="Action" disabled></th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach ($customers as $customer) 
+                        @foreach ($items as $item) 
                         <tr>
-                             <td>{{ $customer->first_name }}</td> 
-                             <td>{{ $customer->last_name }}</td> 
-                             <td>{{ $customer->address }}</td> 
+                             <td>{{ $item->item_name }}</td> 
+                             <td>{{ $item->quantity }}</td> 
 
                             <td class="text-right">
-                              <button class="edit-modal btn btn-success" data-id="{{ $customer->id }}" data-fname="first_name" data-lname="last_name" data-address="address">
+                              <button class="edit-modal btn btn-success" data-id="{{ $item->id }}" data-fname="item_name" data-qty="qty" data-address="address">
                                 <span class="glyphicon glyphicon-pencil"></span>
                               </button>
                             </td>
@@ -67,7 +65,7 @@
                 </table>
             </div>
         </div>
-       {{ $customers->links() }}
+       {{ $items->links() }}
     </div>
 
     <!-- Add Customer Modal -->
@@ -76,23 +74,21 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Add New Customer</h4>
+            <h4 class="modal-title" id="myModalLabel">Add New Items</h4>
           </div>
           <div class="modal-body">
             {!! Form::open([]) !!} {{-- edit to include your route --}}
-                {!! Form::label('last_name', 'Last Name:') !!}
-                {!! Form::text('last_name', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '15')) !!}
+                {!! Form::label('item_name', 'Item Name:') !!}
+                {!! Form::text('item_name', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '15')) !!}
                 
-                {!! Form::label('first_name', 'First Name:') !!}
-                {!! Form::text('first_name', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '15')) !!}
+                {!! Form::label('quantity', 'Quantity:') !!}
+                {!! Form::text('quantity', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '15')) !!}
 
-                {!! Form::label('address', 'Address:') !!}
-                {!! Form::text('address', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '30')) !!}
                
           </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-top:20px">Close</button>
-                {!! Form::submit('Add New Customer', array('class' => 'btn btn-primary', 'style' => 'margin-top: 20px')) !!}
+                {!! Form::submit('Add New Item', array('class' => 'btn btn-primary', 'style' => 'margin-top: 20px')) !!}
               </div>
             {!! Form::close() !!}
         </div>
@@ -115,7 +111,6 @@
         $(document).on('click', '.edit-modal', function() {
             $('.form-horizontal').show();
             $('#fid').val($(this).data('id'));   {{-- refer to the edit button above this is data-id --}}
-            $('#name').val($(this).data('first_name')); {{-- refer to the edit button above this is data-name --}}
             $('#name').val($(this).data('first_name')); {{-- refer to the edit button above this is data-name --}}
             $('#address').val($(this).data('address')); {{-- refer to the edit button above this is data-address --}}
             $('#myModal').modal('show');                {{-- when the edit button is clicked this values are passed into the modal. Name (id) of the modal is myModal --}}
