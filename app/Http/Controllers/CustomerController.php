@@ -70,7 +70,7 @@ class CustomerController extends Controller
         $customers = DB::table('orders')
             ->join('customers', 'customers.id', '=', 'orders.customer_id')
             ->where('customers.id', '=', $id)
-            ->select('orders.id AS order_id', 'orders.order_date', 'customers.id')
+            ->select('orders.id AS order_id', 'orders.order_date', 'customers.id', 'customers.last_name', 'customers.first_name')
             ->get();
  
         return view('customers.customer_order')->withCustomers($customers);

@@ -87,8 +87,9 @@ class OrderController extends Controller
          $customers = DB::table('orders')
             ->join('order_details', 'orders.id', '=', 'order_details.orders_id')
             ->join('items', 'items.id', '=', 'order_details.items_id')
+            ->join('customers', 'customers.id', '=', 'orders.customer_id')
             ->where('orders.id', '=', $id)
-            ->select('order_details.orders_id', 'order_details.quantity', 'items.item_name')
+            ->select('order_details.orders_id', 'order_details.quantity', 'items.item_name', 'customers.id')
             ->get();
 
 

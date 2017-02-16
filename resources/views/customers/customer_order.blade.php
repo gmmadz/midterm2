@@ -41,7 +41,7 @@
                     <tbody>
                         @foreach ($customers as $customer) 
                         <tr>
-                             <td>{{ $customer->order_id }}</td> 
+                             <td>C{{ $customer->id }}-O{{$customer->order_id}}</td> 
                              <td>{{ $customer->order_date }}</td> 
                           
 
