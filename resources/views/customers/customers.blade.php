@@ -50,14 +50,33 @@
                              <td>{{ $customer->last_name }}</td> 
                              <td>{{ $customer->address }}</td> 
 
+                           
+
+
+
                             <td class="text-right">
-                              <button class="edit-modal btn btn-success" data-id="{{ $customer->id }}" data-fname="first_name" data-lname="last_name" data-address="address" data-target="#myModal">
+                              {!! Form::open(['route' => ['customers.show', $customer->id], 'method' => 'GET'])  !!} 
+                                 
+                              {!! Form::button('<i class="glyphicon glyphicon-search"></i>', ['type' => 'submit' ,'class' => 'btn btn-info'])!!}
+
+                              {!! Form::close() !!}
+                            </td>
+
+
+
+
+                            <td class="text-right">
+                              <button class="edit-modal btn btn-success" data-id="{{$customer->id}}" data-fn="{{$customer->first_name}}" data-ln="{{$customer->last_name }}" data-addr="{{$customer->address}}" data-target="#myModal">
                                 <span class="glyphicon glyphicon-pencil"></span>
                               </button>
                             </td>
 
+
+
                             <td class="text-left">
-                            {!! Form::open([]) !!} {{-- edit to include your route --}}
+                            {!! Form::open(['route' => ['customers.destroy', $customer->id], 'method' => 'DELETE']) !!} {{-- edit to include your route --}}
+                               
+
                                 {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit' ,'class' => 'btn btn-danger']) !!}
                             {!! Form::close() !!}
                             </td>
@@ -99,51 +118,59 @@
       </div>
     </div>
 
-   {{-- Edit Modal --}}
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="panel-title" id="myModalLabel"><b>Edit Customer</b></h4>
+    {{-- Edit Modal --}}
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="panel-title" id="myModalLabel"><b>Edit Customer</b></h4>
+                  </div>
+                <div class="modal-body">
+                    
+                        @if($customers->count() == 0)
+                          {!! Form::open() !!} 
+                        @else
+                          
+                          {!! Form::model($customer, ['route' => ['customers.update', $customer->id], 'method' => 'PUT']) !!} 
+                        @endif
+
+
+                        {!! Form::hidden('id', null, ['id' => 'fid', 'class' => 'form-control', 'required' => '']) !!} {{-- the "id" here match the "#fid" in the javascript --}}
+
+                        {!! Form::label('lname', 'Last Name:') !!}
+                        {!! Form::text('lname', null, ['id' => 'ln', 'class' => 'form-control', 'required' => '', 'maxlength' => '35']) !!} {{-- the "id" here match the "#name" in the javascript --}}
+
+                        {!! Form::label('fname', 'First Name:') !!}
+                        {!! Form::text('fname', null, ['id' => 'fn', 'class' => 'form-control', 'required' => '', 'maxlength' => '35']) !!} {{-- the "id" here match the "#name" in the javascript --}}
+
+                        {!! Form::label('address', 'Address:') !!}
+                        {!! Form::text('address', null, ['id' => 'addr', 'class' => 'form-control', 'required' => '', 'maxlength' => '35']) !!}
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal" style="margin-top:20px">Cancel</button>
+                          {!! Form::submit('Update', ['class' => 'btn btn-success', 'style' => 'margin-top: 20px']) !!}
+                        </div>
+                    {!! Form::close() !!}
+                </div>
               </div>
-            <div class="modal-body">
-                {{--{!! Form::open() !!}  This should be Form::Model --}}
-                {!! Form::model($customer, ['route' => ['customers.update', $customer->id], 'method' => 'PUT']) !!}
-                    {!! Form::hidden('id', null, ['id' => 'fid', 'class' => 'form-control', 'required' => '']) !!} {{-- the "id" here match the "#fid" in the javascript --}}
-
-                    {!! Form::label('name', 'Customer Name:') !!}
-                    {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control', 'required' => '', 'maxlength' => '35']) !!} {{-- the "id" here match the "#name" in the javascript --}}
-
-                    {!! Form::label('address', 'Address:') !!}
-                    {!! Form::text('address', null, ['id' => 'address', 'class' => 'form-control', 'required' => '', 'maxlength' => '35']) !!}
-
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-dismiss="modal" style="margin-top:20px">Cancel</button>
-                      {!! Form::submit('Update', ['class' => 'btn btn-success', 'style' => 'margin-top: 20px']) !!}
-                    </div>
-                {!! Form::close() !!}
             </div>
-          </div>
         </div>
-    </div>
-
-    
+        
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     {{--Filter Table Script --}}
-    {!! Html::script('js/filtertable.js') !!}
-
-
+    
    {{-- Edit Data Modal Javascript--}}
     <script type="text/javascript">
         $(document).on('click', '.edit-modal', function() {
             $('.form-horizontal').show();
             $('#fid').val($(this).data('id'));   {{-- refer to the edit button above this is data-id --}}
-            $('#name').val($(this).data('name')); {{-- refer to the edit button above this is data-name --}}
-            $('#address').val($(this).data('address')); {{-- refer to the edit button above this is data-address --}}
+            $('#ln').val($(this).data('ln')); {{-- refer to the edit button above this is data-name --}}
+            $('#fn').val($(this).data('fn')); {{-- refer to the edit button above this is data-name --}}
+            $('#addr').val($(this).data('addr')); {{-- refer to the edit button above this is data-address --}}
             $('#myModal').modal('show');                {{-- when the edit button is clicked this values are passed into the modal. Name (id) of the modal is myModal --}}
         });
     </script>

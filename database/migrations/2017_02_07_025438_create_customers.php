@@ -4,20 +4,20 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class OrderDetails extends Migration
+class CreateCustomers extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+     public function up()
     {
-        Schema::create('order_details', function (Blueprint $table) {
+          Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id')->unsigned();
-            $table->integer('item_id')->unsigned();
-            $table->integer('quantity');
+            $table->string('first_name', 25);
+            $table->string('last_name', 25);
+            $table->string('address', 30);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ class OrderDetails extends Migration
      */
     public function down()
     {
-        Schema::drop('order_details');
+        Schema::drop('customers');
     }
 }

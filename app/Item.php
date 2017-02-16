@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
-    public function orders(){
-    	return $this->hasMany('App\OrderDetails');
+    public function ordersdetails(){
+    	return $this->belongsTo('App\OrderDetails');
     }
 
-     protected $fillable = ['item_id', 'quantity'];
+     
 }

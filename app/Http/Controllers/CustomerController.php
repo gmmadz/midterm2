@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Customer;
+use App\Order;
+use App\OrderDetails;
+use App\Item;
 
 class CustomerController extends Controller
 {
@@ -17,6 +21,9 @@ class CustomerController extends Controller
         $customers = Customer::paginate(3);
        // $customers = Customer::all();
         return view('customers.customers')->withCustomers($customers);
+
+
+     
     }
 
     /**
@@ -55,9 +62,18 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function show($id)
     {
-        //
+        $customers = DB::table('orders')
+            ->join('customers', 'customers.id', '=', 'orders.customer_id')
+            ->where('customers.id', '=', $id)
+            ->select('orders.id AS order_id', 'orders.order_date', 'customers.id')
+            ->get();
+ 
+        return view('customers.customer_order')->withCustomers($customers);
     }
 
     /**
@@ -81,9 +97,9 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $customer = Customer::findOrFail($id);
-        $customer->last_name = $request->last_name;
-        $customer->first_name = $request->first_name;
+        $customer = Customer::find($request->id);
+        $customer->last_name = $request->lname;
+        $customer->first_name = $request->fname;
         $customer->address = $request->address; 
         $customer->save();
         return redirect()->route('customers.index');

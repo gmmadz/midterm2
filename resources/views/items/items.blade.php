@@ -49,13 +49,17 @@
                              <td>{{ $item->quantity }}</td> 
 
                             <td class="text-right">
-                              <button class="edit-modal btn btn-success" data-id="{{ $item->id }}" data-fname="item_name" data-qty="qty" data-address="address">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                              </button>
+                            
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#edit-modal{{ $item->id}}">
+                                   <i class="glyphicon glyphicon-pencil"></i>
+                                </button>
                             </td>
 
                             <td class="text-left">
-                            {!! Form::open([]) !!} {{-- edit to include your route --}}
+                    
+
+
+                            {!! Form::open(['route' => ['items.destroy', $item->id],'method' => 'DELETE']) !!} {{-- edit to include your route --}}
                                 {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit' ,'class' => 'btn btn-danger']) !!}
                             {!! Form::close() !!}
                             </td>
@@ -65,10 +69,10 @@
                 </table>
             </div>
         </div>
-       {{ $items->links() }}
+       {{ $items->links() }} 
     </div>
 
-    <!-- Add Customer Modal -->
+  
     <div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -96,7 +100,33 @@
     </div>
 
 
+<!--EDIT-->
 
+<div class="modal fade" id="edit-modal{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Edit Item</h4>
+          </div>
+          <div class="modal-body">
+            {{-- {!! Form::model($items, ['route' => ['items.update', $items->id], 'method' => 'PUT']) !!} --}}
+            {!! Form::model($item, array('route'=> array('items.update', $item->id), 'method' =>'PUT')) !!} {{-- edit to include your route --}}
+                {!! Form::label('item_name', 'Item Name:') !!}
+                {!! Form::text('item_name', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '15')) !!}
+                
+                {!! Form::label('quantity', 'Quantity') !!}
+                {!! Form::text('quantity', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '15')) !!}
+               
+          </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" style="margin-top:20px">Close</button>
+                {{ Form::submit('Save', array('class' => 'btn btn-success', 'style' => 'margin-top: 20px')) }}
+              </div>
+            {!! Form::close() !!}
+        </div>
+      </div>
+    </div>
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -111,8 +141,8 @@
         $(document).on('click', '.edit-modal', function() {
             $('.form-horizontal').show();
             $('#fid').val($(this).data('id'));   {{-- refer to the edit button above this is data-id --}}
-            $('#name').val($(this).data('first_name')); {{-- refer to the edit button above this is data-name --}}
-            $('#address').val($(this).data('address')); {{-- refer to the edit button above this is data-address --}}
+            $('#ln').val($(this).data('iname')); {{-- refer to the edit button above this is data-name --}}
+            $('#fn').val($(this).data('quantity')); {{-- refer to the edit button above this is data-address --}}
             $('#myModal').modal('show');                {{-- when the edit button is clicked this values are passed into the modal. Name (id) of the modal is myModal --}}
         });
     </script>

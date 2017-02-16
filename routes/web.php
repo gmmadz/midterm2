@@ -13,7 +13,8 @@
 
 Route::get('/', 'PagesController@getIndex');
 
-Route::resource('customers', 'CustomerController', ['except' => ['create', 'show']]);
-Route::resource('orders', 'OrderController', ['except' => ['create', 'show']]);
+Route::resource('customers', 'CustomerController', ['except' => ['create']]);
+Route::resource('orders', 'OrderController', ['except' => ['create']]);
 Route::resource('items', 'ItemController', ['except' => ['create', 'show']]);
-
+Route::get('customer_order/{id}', 'CustomerController@show');
+Route::get('order_details/{id}', 'OrderController@show');

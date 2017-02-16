@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Customer;
+use App\Order;
+use App\OrderDetails;
 use App\Item;
+
 
 
 class ItemController extends Controller
@@ -57,7 +63,16 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        //
+       /*  $items = DB::table('orders')
+            ->join('customers', 'customers.id', '=', 'orders.customer_id')
+            ->join('order_details', 'orders.id', '=', 'order_details.orders_id')
+            ->join('items', 'items.id', '=', 'order_details.items_id')
+            ->where('customers.id', '=', $id)
+            ->get();
+
+        
+
+        return view('orders.customer_order')->withCustomers($items);*/
     }
 
     /**
@@ -80,7 +95,11 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $items = Item::find($request->id);
+        $items->item_name = $request->item_name;
+        $items->quantity = $request->quantity;
+        $items->save();
+        return redirect()->route('items.index');
     }
 
     /**
